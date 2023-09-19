@@ -21,10 +21,10 @@ const Footer = () => {
               <GiSofa size="2rem" /> Comforty
             </div>
 
-            <p>
+            <div>
               This is ecommerce wesiute. sdsdsd sdsds sdsd sdsd. sdwerd sdsd sww
               sd
-            </p>
+            </div>
 
             <BiLogoFacebookCircle />
             <BiLogoTwitter />
@@ -42,12 +42,12 @@ const Footer = () => {
               className=" mr-sm-2"
             />
             <Button type="submit">Subscribe</Button>
-            <p>Hello this ti news letter</p>
+            <div>Hello this ti news letter</div>
           </Col>
         </Row>
       </Card.Body>
       <Card.Header as="p">
-        <p>@ 2023</p>
+       2023
       </Card.Header>
     </Card>
   );

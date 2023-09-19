@@ -21,7 +21,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 //import Col from 'react-bootstrap/Col';
 
 import { useEffect, useState } from "react";
-import { fetchCategory } from "../slices/categorySlice";
+import { Category, fetchCategory } from "../slices/categorySlice";
 
 function Header() {
   const items = useAppSelector((state) => state.category.CategoryList);
@@ -45,8 +45,8 @@ function Header() {
             {/* <Nav.Link href="#home">Home</Nav.Link> */}
             {/* <Nav.Link href="#link">Link</Nav.Link> */}
             <NavDropdown title="Categories" id="basic-nav-dropdown">
-              {items.map((item) => (
-                <NavDropdown.Item href="#action/3.1">{item}</NavDropdown.Item>
+              {items.map((item:Category) => (
+                <NavDropdown.Item href="#action/3.1" key={item}>{item}</NavDropdown.Item>
               ))}
 
               {/* <NavDropdown.Item href="#action/3.2">

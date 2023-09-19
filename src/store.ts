@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 // ...
 import counterReducer from "./slices/counterSlice";
 import categoryReducer from "./slices/categorySlice";
+import productReducer from './slices/productSlice'
 //import categorySlice from './categorySlice'
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
@@ -9,6 +10,7 @@ export const store = configureStore({
   reducer: {
     count: counterReducer,
     category: categoryReducer,
+    products:productReducer
     // posts: postsReducer,
     // comments: commentsReducer,
     // users: usersReducer,

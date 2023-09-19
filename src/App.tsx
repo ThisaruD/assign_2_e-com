@@ -11,6 +11,7 @@ import Notification from "./components/basic-ui-elements/Notification";
 import Footer from './components/Footer';
 
 import ProductPage from './pages/ProductPage';
+import { fetchProducts } from './slices/productSlice';
 
 
 function App() {
@@ -20,9 +21,10 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchCategory());
+   // dispatch(fetchProducts())
   }, []);
 
-  console.log("hello");
+  //console.log("hello");
   return (
     <>
       <Header />
