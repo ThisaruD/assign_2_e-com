@@ -1,0 +1,13 @@
+.main {
+  background: rgb(159, 154, 154);
+  padding: 20px;
+  boxshadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  align-items: center;
+
+  /* margin: '0 auto'; */
+}
+
+.head {
+  text-align: center;
+}

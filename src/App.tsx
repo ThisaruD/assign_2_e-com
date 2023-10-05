@@ -1,40 +1,39 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 
-import { increment } from "./slices/counterSlice";
-import { Button } from "react-bootstrap";
 import Header from "./components/Header";
-import { fetchCategory } from "./slices/categorySlice";
-import { useAppSelector } from "./store";
-import Loader from "./components/basic-ui-elements/Loader";
-import Notification from "./components/basic-ui-elements/Notification";
-import Footer from './components/Footer';
+import Footer from "./components/Footer";
+import ProductPage from "./pages/product/ProductPage";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+//import ErrorPage from "./pages/ErrorPage";
+import ShoppingCart from "./pages/cart/ShoppingCart";
+import SignIn from "./pages/signin/SignInPage";
+import ProductDetailPage from "./pages/product/ProductDetailPage";
+import PaymentPage from "./pages/payment/PaymentPage";
+import UserProfilePage from "./pages/profile/UserProfilePage";
 
-import ProductPage from './pages/ProductPage';
-import { fetchProducts } from './slices/productSlice';
-
+import { fetchCategory } from "./actions/category-actions";
+import { useAppDispatch } from "./store";
 
 function App() {
-  const dispatch = useDispatch();
-
-  //const counter = useAppSelector((state) => state.count.value);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchCategory());
-   // dispatch(fetchProducts())
-  }, []);
+  }, [dispatch]);
 
-  //console.log("hello");
   return (
-    <>
+    <BrowserRouter>
       <Header />
-      {/* <p>HELLO {counter}</p>
-      <Loader variant="success" animation="grow" />
-      <Button onClick={() => dispatch(increment())}>cLICK</Button>
-      <Notification variant="success" /> */}
-      <ProductPage/>
-      <Footer/>
-    </>
+      <Routes>
+        <Route path="/" element={<ProductPage />} />
+        <Route path="/:productId" element={<ProductDetailPage />} />
+        <Route path="/cart" element={<ShoppingCart />} />
+        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/user-profile" element={<UserProfilePage />} />
+      </Routes>
+      <Footer />
+    </BrowserRouter>
   );
 }
 

@@ -1,9 +1,8 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { GET_CATEGORY_LIST_API } from '../constants/apiConstants';
+import { GET_CATEGORY_LIST_API } from "../constants/apiConstants";
 
-
-export const fetchCategory = createAsyncThunk(
+ export const fetchCategory = createAsyncThunk(
   "category/fetch",
   async (thunkAPI) => {
     const response = await fetch(GET_CATEGORY_LIST_API);
@@ -12,3 +11,5 @@ export const fetchCategory = createAsyncThunk(
     return data;
   }
 );
+
+

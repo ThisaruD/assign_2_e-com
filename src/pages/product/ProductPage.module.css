@@ -1,0 +1,16 @@
+.head {
+  text-align: center;
+  margin-bottom: 10px;
+  
+}
+
+.loaderContainer {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  height: 100vh; /* Make the container full-height of the viewport */
+}
+
+.paginationBar {
+  display: flex;
+  justify-content: center;
+}

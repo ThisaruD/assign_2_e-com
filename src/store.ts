@@ -1,27 +1,21 @@
 import { configureStore } from "@reduxjs/toolkit";
-// ...
-import counterReducer from "./slices/counterSlice";
-import categoryReducer from "./slices/categorySlice";
-import productReducer from './slices/productSlice'
-//import categorySlice from './categorySlice'
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+
+import categoryReducer from "./slices/categorySlice";
+import productReducer from "./slices/productSlice";
+import cartReducer from "./slices/cartSlice";
+import userReducer from "./slices/userSlice";
 
 export const store = configureStore({
   reducer: {
-    count: counterReducer,
     category: categoryReducer,
-    products:productReducer
-    // posts: postsReducer,
-    // comments: commentsReducer,
-    // users: usersReducer,
+    products: productReducer,
+    cart: cartReducer,
+    user: userReducer,
   },
 });
 
-// Infer the `RootState` and `AppDispatch` types from the store itself
-//export type RootState = ReturnType<typeof store.getState>
 
-// Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
-//export type AppDispatch = typeof store.dispatch = useDispatch;
 
 export const useAppDispatch: () => typeof store.dispatch = useDispatch;
 

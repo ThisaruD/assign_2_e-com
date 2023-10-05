@@ -1,7 +1,5 @@
-import { Container, Row, Col } from "react-bootstrap";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
-import Card from "react-bootstrap/Card";
+import { Button, Row, Col, Form, Card } from "react-bootstrap";
+
 import { GiSofa } from "react-icons/gi";
 import {
   BiLogoFacebookCircle,
@@ -22,8 +20,8 @@ const Footer = () => {
             </div>
 
             <div>
-              This is ecommerce wesiute. sdsdsd sdsds sdsd sdsd. sdwerd sdsd sww
-              sd
+              Vivamus tristique odio sit amet velit semper, eu posuere turpis
+              interdum. Cras egestas purus
             </div>
 
             <BiLogoFacebookCircle />
@@ -42,13 +40,14 @@ const Footer = () => {
               className=" mr-sm-2"
             />
             <Button type="submit">Subscribe</Button>
-            <div>Hello this ti news letter</div>
+            <div>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
+              tincidunt erat enim.
+            </div>
           </Col>
         </Row>
       </Card.Body>
-      <Card.Header as="p">
-       2023
-      </Card.Header>
+      <Card.Header as="p">2023</Card.Header>
     </Card>
   );
 };

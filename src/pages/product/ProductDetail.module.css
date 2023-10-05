@@ -1,0 +1,15 @@
+.thickerBorder {
+    border: 2px solid red
+  }
+
+  .loaderContainer {
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    height: 100vh; /* Make the container full-height of the viewport */
+  }
+
+  .head {
+    text-align: center;
+    margin-bottom: 10px;
+    
+  }

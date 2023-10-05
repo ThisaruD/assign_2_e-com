@@ -1,122 +1,140 @@
-import { useSelector } from "react-redux";
-import { RootState, useAppDispatch, useAppSelector } from "../store";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
+import { useAppDispatch, useAppSelector } from "../store";
+import { categoryActions } from "../slices/categorySlice";
+import { userActions } from "../slices/userSlice";
+
+import {
+  Container,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Form,
+  Button,
+  Image,
+} from "react-bootstrap";
 import { GiSofa } from "react-icons/gi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CgProfile } from "react-icons/cg";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-
-//mport Navbar from 'react-bootstrap/Navbar';
-//import Form from 'react-bootstrap/Form';
-//import Button from 'react-bootstrap/Button';
-import InputGroup from "react-bootstrap/InputGroup";
-//import Row from 'react-bootstrap/Row';
-//import Col from 'react-bootstrap/Col';
-
-import { useEffect, useState } from "react";
-import { Category, fetchCategory } from "../slices/categorySlice";
+import { productActions } from "../slices/productSlice";
 
 function Header() {
-  const items = useAppSelector((state) => state.category.CategoryList);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [enteredKeyword, setEnteredKeyword] = useState("");
 
-  //const items = useSelector((state: RootState) => state.category.categoryList)
-  //const count = useSelector((state: RootState) => state.count.value)
-  //console.log(items)
-  //console.log(count)
+  const categoryList = useAppSelector((state) => state.category.CategoryList);
+  const newCategoryList = ["All Products", ...categoryList];
 
-  const cartItems = 0;
-  //const items = ["it1","it2","it3"]
+  const cartItems = useAppSelector((state) => state.cart.Cart);
+  const cartItemsCount = cartItems.reduce(
+    (total, item) => total + item.itemQuantity,
+    0
+  );
+
+  let selectedCategory = "";
+  selectedCategory = useAppSelector((state) => state.category.selectedCategory);
+
+  const { isLogged, userData } = useAppSelector((state) => state.user);
+
+  const logoutHandler = () => {
+    dispatch(userActions.logoutUser());
+  };
+
+  const searchKeywordHandler = (e: Event) => {
+    e.preventDefault();
+    dispatch(
+      productActions.setSearchKeyword({ searchKeyword: enteredKeyword })
+    );
+    setEnteredKeyword("");
+  };
+
+  const dropdownHandler = (category: string) => {
+    console.log(category);
+    dispatch(categoryActions.selectCategory(category));
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary justify-content-between">
       <Container>
-        <Navbar.Brand href="#home">
-          <GiSofa /> Comforty
+        <Navbar.Brand>
+          <Link to="/">
+            <GiSofa /> Comforty
+          </Link>
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {/* <Nav.Link href="#home">Home</Nav.Link> */}
-            {/* <Nav.Link href="#link">Link</Nav.Link> */}
-            <NavDropdown title="Categories" id="basic-nav-dropdown">
-              {items.map((item:Category) => (
-                <NavDropdown.Item href="#action/3.1" key={item}>{item}</NavDropdown.Item>
+            <NavDropdown
+              title={
+                selectedCategory.length > 0 ? selectedCategory : "Categories"
+              }
+              id="basic-nav-dropdown"
+            >
+              {newCategoryList.map((item) => (
+                <NavDropdown.Item
+                  onClick={() => dropdownHandler(item)}
+                  key={item}
+                >
+                  {item}
+                </NavDropdown.Item>
               ))}
-
-              {/* <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item> */}
             </NavDropdown>
-            <Form>
-              <Row>
-                <Col></Col>
-                <Col>
-                  <Form.Control
-                    type="text"
-                    placeholder="Search"
-                    className=" mr-sm-2"
-                  />
-                </Col>
-
-                {/* <Col xs="auto">
-                  <Button type="submit">Submit</Button>
-                </Col> */}
-                <Col>
-                  <Button>
-                    <AiOutlineShoppingCart />
-                    Cart {cartItems}
-                  </Button>
-                </Col>
-                <Col>
-                  <Button>
+          </Nav>
+          <Nav className="mx-auto">
+            {" "}
+            {/* Centered Nav */}
+            <Form className="d-flex">
+              <Form.Control
+                type="text"
+                placeholder="Search"
+                className="mr-2"
+                value={enteredKeyword}
+                onChange={(e) => setEnteredKeyword(e.target.value)}
+              />
+              <Button variant="primary" onClick={searchKeywordHandler}>
+                Search
+              </Button>
+            </Form>
+          </Nav>
+          <Nav className="ml-auto">
+            <Button variant="light" onClick={() => navigate("/cart")}>
+              <AiOutlineShoppingCart />
+              Cart {cartItemsCount}
+            </Button>
+            {isLogged ? (
+              <>
+                <NavDropdown title="Profile" id="basic-nav-dropdown">
+                  <NavDropdown.Item onClick={() => navigate("/user-profile")}>
                     <CgProfile />
                     Profile
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
+                  </NavDropdown.Item>
+                  <NavDropdown.Item onClick={logoutHandler}>
+                    Logout
+                  </NavDropdown.Item>
+                </NavDropdown>
+                <Nav className="align-items-center">
+                  <p className="mb-0 mr-2">Welcome {userData.firstName}</p>
+                  <Image
+                    src={userData.image}
+                    border={1}
+                    roundedCircle
+                    width={50}
+                    height={50}
+                  />
+                </Nav>
+              </>
+            ) : (
+              <Button variant="light" onClick={() => navigate("/sign-in")}>
+                <CgProfile />
+                Sign In
+              </Button>
+            )}
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
-    //   <Navbar className="bg-body-tertiary justify-content-between">
-    //   <Navbar.Brand href="#home">
-    //          <GiSofa /> Comforty
-    //     </Navbar.Brand>
-    //     <NavDropdown title="Categories" id="basic-nav-dropdown">
-    //              {items.map((item) => (
-    //                <NavDropdown.Item href="#action/3.1">{item}</NavDropdown.Item>
-    //              ))}
-    //       </NavDropdown>
-    //   <Form >
-    //       <Row>
-
-    //       <Col xs="auto">
-    //         <Form.Control
-    //           type="text"
-    //           placeholder="Search"
-    //           className=" mr-sm-2"
-    //         />
-    //         </Col>
-
-    //       <Col xs="auto">
-    //         <Button type="submit">Submit</Button>
-    //         </Col>
-
-    //     </Row>
-    //   </Form>
-    // </Navbar>
   );
 }
 

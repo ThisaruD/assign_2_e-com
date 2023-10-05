@@ -1,62 +1,94 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { GET_PRODUCT_LIST_API } from '../constants/apiConstants';
+import { createSlice } from "@reduxjs/toolkit";
+import {
+  fetchAllProducts,
+  fetchProductById,
+  fetchProductsByCategory,
+  searchProducts,
+} from "../actions/product-actions";
+import { ProductState } from '../types/product';
 
-export interface Product { 
-  id: number,
-  title: string,
-  description: string,
-  price: number,
-  discountPercentage: number,
-  rating: number,
-  stock: number,
-  brand: string,
-  category: string,
-  thumbnail: string,
-  images: string[],
-}
 
-interface ProductState { 
-  productList: Product[];
-  loading: boolean;
-}
 
 const initialState: ProductState = {
   productList: [],
-  loading: false, // Set initial loading state to false
-}
-
-export const fetchProducts = createAsyncThunk(
-  "product/fetch",
-  async (thunkAPI) => {
-    const response = await fetch(GET_PRODUCT_LIST_API);
-      const data = await response.json();  // Await for JSON parsing
-      console.log(data)
-    return data;
-  }
-);
+  loading: false,
+  searchKeyword: "",
+};
 
 export const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    setSearchKeyword: (state, action) => {
+      console.log(action.payload.searchKeyword)
+      state.searchKeyword = action.payload.searchKeyword;
+    },
+    removeSearchKeyword: (state) => { 
+      state.searchKeyword=""
+    }
+  },
   extraReducers: (builder) => {
-    builder.addCase(fetchProducts.pending, (state) => {
-      // Set loading to true when the fetch is pending
-        state.loading = true;
-        console.log("pending")
+    builder.addCase(fetchAllProducts.pending, (state) => {
+      state.loading = true;
+      console.log("fetchAllProducts pending");
     });
-    builder.addCase(fetchProducts.fulfilled, (state, action) => {
+    builder.addCase(fetchAllProducts.fulfilled, (state, action) => {
       state.productList = action.payload.products;
-        state.loading = false; // Set loading to false when the fetch is successful
-        console.log("fulfilled")
+      state.loading = false;
+      console.log("fetchAllProducts fulfilled");
     });
-    builder.addCase(fetchProducts.rejected, (state) => {
-        state.loading = false; // Set loading to false when the fetch is rejected
-        console.log("rejected")
+    builder.addCase(fetchAllProducts.rejected, (state) => {
+      state.loading = false;
+      console.log("fetchAllProducts rejected");
+    });
+
+    //fetchProductById
+    builder.addCase(fetchProductById.pending, (state) => {
+      state.loading = true;
+      console.log("fetchProductById pending");
+    });
+    builder.addCase(fetchProductById.fulfilled, (state, action) => {
+      console.log("fetchProductById fulfilled", action.payload);
+      state.productList = [action.payload];
+      state.loading = false;
+    });
+    builder.addCase(fetchProductById.rejected, (state) => {
+      state.loading = false;
+      console.log("fetchProductById rejected");
+    });
+
+    //fetchProductByCategory
+    builder.addCase(fetchProductsByCategory.pending, (state) => {
+      state.loading = true;
+      console.log("fetchProductsByCategory pending");
+    });
+    builder.addCase(fetchProductsByCategory.fulfilled, (state, action) => {
+      console.log("fetchProductsByCategory fulfilled", action.payload);
+      state.productList = action.payload.products;
+      state.loading = false;
+    });
+    builder.addCase(fetchProductsByCategory.rejected, (state) => {
+      state.loading = false;
+      console.log("fetchProductsByCategory rejected");
+    });
+
+    //search product by keyword
+    builder.addCase(searchProducts.pending, (state) => {
+      state.loading = true;
+      console.log("fetchProductsByCategory pending");
+    });
+    builder.addCase(searchProducts.fulfilled, (state, action) => {
+      console.log("fetchProductsByCategory fulfilled", action.payload);
+      state.productList = action.payload.products;
+      state.loading = false;
+    });
+    builder.addCase(searchProducts.rejected, (state) => {
+      state.loading = false;
+      console.log("fetchProductsByCategory rejected");
     });
   },
 });
 
-export const categoryActions = productSlice.actions;
+export const productActions = productSlice.actions;
 
 export default productSlice.reducer;

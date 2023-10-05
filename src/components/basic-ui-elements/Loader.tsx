@@ -1,15 +1,16 @@
-import { FC } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
+import Spinner from "react-bootstrap/Spinner";
 
+type loaderProps = {
+  animation: "border" | "grow";
+  variant: "secondary";
+};
 
-const Loader: FC<{ variant: string; animation: string; }> = ({ variant,animation}) => {
-
- 
+const Loader = (props: loaderProps) => {
   return (
-    <Spinner animation={ animation} role="status" variant={ variant} >
+    <Spinner animation={props.animation} role="status" variant={props.variant}>
       <span className="visually-hidden">Loading...</span>
     </Spinner>
   );
-}
+};
 
 export default Loader;
